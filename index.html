@@ -9,14 +9,17 @@
     <h1>Pousadaria</h1>
     <div id="app">
         <ul>
-            <li v-for="inn in innsList">
+            <li v-for="inn, index in innsList">
                 <div id="inn-card">
                     <h2>{{ inn.name }}</h2>
-                    <address>
-                        <p>{{ inn.city }} - {{ inn.state }}</p>
-                    </address>
                     <p>{{ inn.description }}</p>
                     <p>Avaliação: {{ inn.average_score }}</p>
+                    <address>
+                        <p>{{ inn.city }} - {{ inn.state }}</p>
+                        <p>Contato:</p>
+                        <a :href="'mailto:' + inn.email">{{ inn.email }}</a> <br>
+                        <a :href="'tel:' + inn.phone">{{ inn.phone }}</a>
+                    </address>
                 </div>
             </li>
         </ul>
