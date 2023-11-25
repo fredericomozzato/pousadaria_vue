@@ -1,3 +1,14 @@
+const MainComponent = {
+    template: `<div>Count {{ count }}</div>`,
+    data() {
+        return {
+            count: 0
+        }
+    },
+    methods: {}
+}
+
+
 const app = Vue.createApp({
     data() {
         return {
@@ -49,7 +60,11 @@ const app = Vue.createApp({
     },
     beforeMount() {
         this.getInns();
+    },
+    components: {
+        "main-component": MainComponent
     }
-});
+})
 
 app.mount("#app");
+
