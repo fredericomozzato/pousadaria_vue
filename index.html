@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pousadaria</title>
+</head>
+<body>
+    <h1>Pousadaria</h1>
+    <div id="app">
+        <div id="search-bar">
+            <input type="text" id="search-field" placeholder="Nome da pousada" v-model="query">
+            <button>Pesquisar</button>
+        </div>
+
+        <ul>
+            <li v-for="inn, index in filteredInns">
+                <div id="inn-card">
+                    <h2>{{ inn.name }}</h2>
+                    <p>{{ inn.description }}</p>
+                    <p>Avaliação: {{ inn.average_score }}</p>
+                    <address>
+                        <p>{{ inn.city }} - {{ inn.state }}</p>
+                        <p>Contato:</p>
+                        <a :href="'mailto:' + inn.email">{{ inn.email }}</a> <br>
+                        <a :href="'tel:' + inn.phone">{{ inn.phone }}</a>
+                    </address>
+                </div>
+            </li>
+        </ul>
+
+        <div v-if="filteredInns.length === 0">
+            <p>Nenhuma pousada encontrada</p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
