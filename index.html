@@ -6,9 +6,20 @@
     <title>Pousadaria</title>
 </head>
 <body>
+    <h1>Pousadaria</h1>
     <div id="app">
-        <h1>{{ title }}</h1>
-
+        <ul>
+            <li v-for="inn in innsList">
+                <div id="inn-card">
+                    <h2>{{ inn.name }}</h2>
+                    <address>
+                        <p>{{ inn.city }} - {{ inn.state }}</p>
+                    </address>
+                    <p>{{ inn.description }}</p>
+                    <p>Avaliação: {{ inn.average_score }}</p>
+                </div>
+            </li>
+        </ul>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
