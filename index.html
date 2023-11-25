@@ -8,8 +8,13 @@
 <body>
     <h1>Pousadaria</h1>
     <div id="app">
+        <div id="search-bar">
+            <input type="text" id="search-field" placeholder="Nome da pousada" v-model="query">
+            <button>Pesquisar</button>
+        </div>
+
         <ul>
-            <li v-for="inn, index in innsList">
+            <li v-for="inn, index in filteredInns">
                 <div id="inn-card">
                     <h2>{{ inn.name }}</h2>
                     <p>{{ inn.description }}</p>
@@ -23,6 +28,10 @@
                 </div>
             </li>
         </ul>
+
+        <div v-if="filteredInns.length === 0">
+            <p>Nenhuma pousada encontrada</p>
+        </div>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>

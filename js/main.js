@@ -1,7 +1,8 @@
 const app = Vue.createApp({
     data() {
         return {
-            innsList: []
+            inns: [],
+            query: ""
         }
     },
     methods: {
@@ -31,9 +32,20 @@ const app = Vue.createApp({
                 inn.state = o.address.state;
                 inn.postalCode = o.postal_code;
 
-                this.innsList.push(inn);
+                this.inns.push(inn);
             });
         },
+    },
+    computed: {
+        filteredInns() {
+            if (this.query) {
+                return this.inns.filter(inn => {
+                    return inn.name.toLowerCase().includes(this.query.toLowerCase());
+                });
+            } else {
+                return this.inns;
+            }
+        }
     },
     beforeMount() {
         this.getInns();
