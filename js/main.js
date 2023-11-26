@@ -1,15 +1,5 @@
-const MainComponent = {
-    template: `<div>Count {{ count }}</div>`,
-    data() {
-        return {
-            count: 0
-        }
-    },
-    methods: {}
-}
-
-
-const app = Vue.createApp({
+const main = {
+    template: "#main-template",
     data() {
         return {
             inns: [],
@@ -21,11 +11,12 @@ const app = Vue.createApp({
             let res = await fetch("http://localhost:3000/api/v1/inns");
             let data = await res.json();
 
-            console.log(data);
+            // console.log(data);
 
             data.forEach(o => {
                 let inn = new Object();
 
+                inn.id = o.id;
                 inn.name = o.name;
                 inn.phone = o.phone;
                 inn.email = o.email;
@@ -47,24 +38,92 @@ const app = Vue.createApp({
             });
         },
     },
-    computed: {
-        filteredInns() {
-            if (this.query) {
-                return this.inns.filter(inn => {
-                    return inn.name.toLowerCase().includes(this.query.toLowerCase());
-                });
-            } else {
-                return this.inns;
-            }
-        }
-    },
     beforeMount() {
         this.getInns();
-    },
-    components: {
-        "main-component": MainComponent
     }
-})
+}
 
+const innDetails = {
+    template: "#inn-details-template",
+    data() {
+        return {
+            inn: new Object(),
+            rooms: []
+        }
+    },
+    created() {
+        this.getInn();
+        this.getRooms();
+    },
+    methods: {
+        async getInn() {
+            var id = this.$route.params.id;
+            var res = await fetch(`http://localhost:3000/api/v1/inns/${id}`);
+            var data = await res.json();
+        
+            this.inn.name = data.name;
+            this.inn.email = data.email;
+            this.inn.phone = data.phone;
+            this.inn.payMethods = data.pay_methods;
+            this.inn.petFriendly = data.pet_friendly;
+            this.inn.userPolicies = data.user_policies;
+            this.inn.checkInTime = data.formatted_check_in_time;
+            this.inn.checkOutTime = data.formatted_check_out_time;
+            this.inn.city = data.address.city;
+            this.inn.state = data.address.state;
+            this.inn.street = data.address.street;
+            this.inn.number = data.address.number;
+            this.inn.neighborhood = data.address.neighborhood;
+            this.inn.postalCode = data.address.postal_code;
+            this.inn.description = data.description;
+            this.inn.averageScore = data.average_score;
+        },
+        async getRooms() {
+            var innId = this.$route.params.id;
+            var url = `http://localhost:3000/api/v1/inns/${innId}/rooms`;
+            var res = await fetch(url);
+            var data = await res.json();
+
+            this.rooms = [];
+
+            data.forEach(r => {
+                var room = new Object();
+
+                room.name = r.name;
+                room.description = r.description;
+                room.size = r.size;
+                room.maxGuests = r.max_guests;
+                room.price = r.price;
+                room.bathroom = r.bathroom;
+                room.porch = r.porch;
+                room.airConditioner = r.air_conditioner;
+                room.tv = r.tv;
+                room.wardrober = r.wardrobe;
+                room.safe = r.safe;
+                room.wifi = r.wifi;
+                room.accessibility = r.accessibility;
+
+                this.rooms.push(room);
+            });
+        }
+    }
+
+}
+
+
+const routes = [
+    { path: "/", component: main },
+    { path: "/inns/:id", component: innDetails }
+]
+
+const router = VueRouter.createRouter({
+    history: VueRouter.createWebHashHistory(),
+    routes
+  })
+
+
+const app = Vue.createApp({})
+
+app.use(router);
 app.mount("#app");
 
