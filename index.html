@@ -12,11 +12,16 @@
             <input type="text" id="search-field" placeholder="Nome da pousada" v-model="query">
             <button>Pesquisar</button>
         </div>
+        
+        <router-view></router-view>
+    </div>
+   
 
+    <script id="main-template" type="text/template">
         <ul>
-            <li v-for="inn, index in filteredInns">
+            <li v-for="inn, index in inns">
                 <div id="inn-card">
-                    <h2>{{ inn.name }}</h2>
+                    <h2><router-link :to="/inns/ + inn.id">{{ inn.name }}</router-link></h2>
                     <p>{{ inn.description }}</p>
                     <p>Avaliação: {{ inn.average_score }}</p>
                     <address>
@@ -28,13 +33,74 @@
                 </div>
             </li>
         </ul>
+    </script>
 
-        <div v-if="filteredInns.length === 0">
-            <p>Nenhuma pousada encontrada</p>
-        </div>
-    </div>
+    <script id="inn-details-template" type="text/template">
+        <section>
+            <div id="details">
+                <h1>{{ inn.name }}</h1>
+                <h3>Média de avaliações: {{ inn.averageScore }}</h3>
+                <address>
+                    <p>{{ inn.street }}, {{ inn.number }}</p>
+                    <p>{{ inn.neighborhood }}, {{ inn.city }} - {{ inn.state }}</p>
+                    <p>CEP: {{ inn.postalCode }}</p>
+                    <a :href="'mailto:' + inn.email">{{ inn.email }}</a><br>
+                    <a :href="'tel:' + inn.phone">{{ inn.phone }}</a>
+                </address>
+                <dl>
+                    <dt>Descrição:</dt>
+                    <dd>{{ inn.description }}</dd>
+                    <dt>Métodos de pagamento:</dt>
+                    <dd>{{ inn.payMethods }}</dd>
+                    <dt>Aceita pets:</dt>
+                    <dd>{{ inn.petFriendly === true ? "Sim" : "Não" }}</dd>
+                    <dt>Políticas de uso:</dt>
+                    <dd>{{ inn.userPolicies }}</dd>
+                    <dt>Horário de check-in:</dt>
+                    <dd>{{ inn.checkInTime }}</dd>
+                    <dt>Horário de check-out:</dt>
+                    <dd>{{ inn.checkOutTime }}</dd>
+                </dl>
+            </div>
+
+            <div id="rooms">
+                <h2>Quartos disponíveis</h2>
+                <ul>
+                    <li v-for="room in rooms">
+                        <div class="room-details">
+                            <h3>{{ room.name }}</h3>
+                            <p>{{ room.description }}</p>
+                            <dl>
+                                <dt>Tamanho:</dt>
+                                <dd>{{ room.size }} m²</dd>
+                                <dt>Número de hóspedes:</dt>
+                                <dd>{{ room.maxGuests }}</dd>
+                                <dt>Valor da diária:</dt>
+                                <dd>R$ {{ room.price }}</dd>
+                                <dt>Comodidades:</dt>
+                                <dd>
+                                    <li v-for="ammenity in room.ammenities"></li>
+                                    <li>Banheiro próprio: {{ room.bathroom === true ? "Sim" : "Não" }}</li>
+                                    <li>Sacada: {{ room.porch === true ? "Sim" : "Não" }}</li>
+                                    <li>Ar-condicionado: {{ room.airConditioner === true ? "Sim" : "Não" }}</li>
+                                    <li>Televisão: {{ room.tv === true ? "Sim" : "Não" }}</li>
+                                    <li>Guarda-roupas: {{ room.wardrobe === true ? "Sim" : "Não" }}</li>
+                                    <li>Cofre: {{ room.safe === true ? "Sim" : "Não" }}</li>
+                                    <li>Wi-fi: {{ room.wifi === true ? "Sim" : "Não" }}</li>
+                                    <li>Acessibilidade: {{ room.accessibility === true ? "Sim" : "Não" }}</li>
+                                </dd>
+                            </dl>
+                            <button>RESERVAR</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <router-link to="/">Voltar</router-link>
+    </script>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-router@4"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
