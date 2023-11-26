@@ -30,12 +30,13 @@
             <input type="text" id="search-field" placeholder="Nome da pousada" v-model="query">
             <button>Pesquisar</button>
         </div>
+        
+        <h1>Pousadas</h1>
 
-        <div v-if="inns.length === 0">
+        <div v-if="filterInns.length === 0">
             <p>Nenhuma pousada encontrada</p>
         </div>
         
-        <h1>Pousadas</h1>
         <ul>
             <li v-for="inn, index in filterInns">
                 <div id="inn-card">
