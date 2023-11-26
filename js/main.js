@@ -1,13 +1,18 @@
 const NavBar = {
-    template: "#nav-bar"
+    template: "#nav-bar-template",
+    data() {
+        return {
+            query: ""
+        }
+    }
 }
 
 const InnsList = {
-    template: "#inns-list",
+    template: "#inns-list-template",
     data() {
         return {
             inns: [],
-            query: ""
+            recentInns: []
         }
     },
     methods: {
@@ -38,7 +43,10 @@ const InnsList = {
 
                 this.inns.push(inn);
             });
-        },
+
+            this.recentInns = this.inns.slice(-3).reverse();
+            this.inns.sort((a, b) => a.name.localeCompare(b.name));
+        }
     },
     beforeMount() {
         this.getInns();

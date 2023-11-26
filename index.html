@@ -6,25 +6,48 @@
     <title>Pousadaria</title>
 </head>
 <body>
-    <h1>Pousadaria</h1>
-    <div id="app">       
-        <router-view></router-view>
-    </div>
+    <div id="app"></div>
    
-
     <script id="main-template" type="text/template">
-        <nav-bar></nav-bar>
+        <header>
+            <nav-bar></nav-bar>
+        </header>
         <router-view></router-view>
     </script>
 
-    <script id="nav-bar" type="text/template">
-        <div id="search-bar">
-            <input type="text" id="search-field" placeholder="Nome da pousada" v-model="query">
-            <button>Pesquisar</button>
-        </div>
+    <script id="nav-bar-template" type="text/template">
+        <section id="nav-bar">
+            <ul>
+                <li><router-link to="/">Pousadaria</router-link></li>
+                <li><a href="">Entrar</a></li>
+                <li>
+                    <div id="search-bar">
+                        <input type="text" id="search-field" placeholder="Nome da pousada" v-model="query">
+                        <button>Pesquisar</button>
+                    </div>
+                </li>
+            </ul>
+        </section>
     </script>
 
-    <script id="inns-list" type="text/template">
+    <script id="inns-list-template" type="text/template">
+        <h1>Novidades</h1>
+        <ul>
+            <li v-for="inn in recentInns">
+                <div id="inn-card">
+                    <h2><router-link :to="/inns/ + inn.id">{{ inn.name }}</router-link></h2>
+                    <p>{{ inn.description }}</p>
+                    <p>Avaliação: {{ inn.average_score }}</p>
+                    <address>
+                        <p>{{ inn.city }} - {{ inn.state }}</p>
+                        <p>Contato:</p>
+                        <a :href="'mailto:' + inn.email">{{ inn.email }}</a> <br>
+                        <a :href="'tel:' + inn.phone">{{ inn.phone }}</a>
+                    </address>
+                </div>
+            </li>
+        </ul>
+        <h1>Pousadas</h1>
         <ul>
             <li v-for="inn, index in inns">
                 <div id="inn-card">
