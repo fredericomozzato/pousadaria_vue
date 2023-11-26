@@ -1,8 +1,12 @@
 const NavBar = {
     template: "#nav-bar-template",
-    data() {
-        return {
-            query: ""
+    method: {
+        async searchInn() {
+            var url = `http://localhost:3000/api/v1/inns?name=${query}`;
+            var res = await fetch(url);
+            var jsonData = await res.json();
+
+            
         }
     }
 }
@@ -11,6 +15,7 @@ const InnsList = {
     template: "#inns-list-template",
     data() {
         return {
+            query: "",
             inns: [],
             recentInns: []
         }
@@ -44,12 +49,18 @@ const InnsList = {
                 this.inns.push(inn);
             });
 
-            this.recentInns = this.inns.slice(-3).reverse();
             this.inns.sort((a, b) => a.name.localeCompare(b.name));
         }
     },
     beforeMount() {
         this.getInns();
+    },
+    computed: {
+        filterInns() {
+            return this.inns.filter(inn => {
+                return inn.name.toLowerCase().includes(this.query.toLowerCase())
+            });
+        }
     }
 }
 
