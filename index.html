@@ -7,17 +7,24 @@
 </head>
 <body>
     <h1>Pousadaria</h1>
-    <div id="app">
-        <div id="search-bar">
-            <input type="text" id="search-field" placeholder="Nome da pousada" v-model="query">
-            <button>Pesquisar</button>
-        </div>
-        
+    <div id="app">       
         <router-view></router-view>
     </div>
    
 
     <script id="main-template" type="text/template">
+        <nav-bar></nav-bar>
+        <router-view></router-view>
+    </script>
+
+    <script id="nav-bar" type="text/template">
+        <div id="search-bar">
+            <input type="text" id="search-field" placeholder="Nome da pousada" v-model="query">
+            <button>Pesquisar</button>
+        </div>
+    </script>
+
+    <script id="inns-list" type="text/template">
         <ul>
             <li v-for="inn, index in inns">
                 <div id="inn-card">
