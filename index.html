@@ -79,6 +79,7 @@
                                 <dd>R$ {{ room.price }}</dd>
                                 <dt>Comodidades:</dt>
                                 <dd>
+                                    <li v-for="ammenity in room.ammenities"></li>
                                     <li>Banheiro próprio: {{ room.bathroom === true ? "Sim" : "Não" }}</li>
                                     <li>Sacada: {{ room.porch === true ? "Sim" : "Não" }}</li>
                                     <li>Ar-condicionado: {{ room.airConditioner === true ? "Sim" : "Não" }}</li>
@@ -97,8 +98,6 @@
         </section>
         <router-link to="/">Voltar</router-link>
     </script>
-
-
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vue-router@4"></script>

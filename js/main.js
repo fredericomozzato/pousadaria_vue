@@ -11,8 +11,6 @@ const main = {
             let res = await fetch("http://localhost:3000/api/v1/inns");
             let data = await res.json();
 
-            // console.log(data);
-
             data.forEach(o => {
                 let inn = new Object();
 
@@ -110,7 +108,6 @@ const innDetails = {
 
 }
 
-
 const routes = [
     { path: "/", component: main },
     { path: "/inns/:id", component: innDetails }
@@ -121,9 +118,7 @@ const router = VueRouter.createRouter({
     routes
   })
 
-
 const app = Vue.createApp({})
 
 app.use(router);
 app.mount("#app");
-
