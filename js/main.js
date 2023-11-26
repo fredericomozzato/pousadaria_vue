@@ -1,9 +1,18 @@
-const main = {
-    template: "#main-template",
+const NavBar = {
+    template: "#nav-bar-template",
+    data() {
+        return {
+            query: ""
+        }
+    }
+}
+
+const InnsList = {
+    template: "#inns-list-template",
     data() {
         return {
             inns: [],
-            query: ""
+            recentInns: []
         }
     },
     methods: {
@@ -34,14 +43,17 @@ const main = {
 
                 this.inns.push(inn);
             });
-        },
+
+            this.recentInns = this.inns.slice(-3).reverse();
+            this.inns.sort((a, b) => a.name.localeCompare(b.name));
+        }
     },
     beforeMount() {
         this.getInns();
     }
 }
 
-const innDetails = {
+const InnDetails = {
     template: "#inn-details-template",
     data() {
         return {
@@ -108,9 +120,18 @@ const innDetails = {
 
 }
 
+const Main = {
+    template: "#main-template",
+    components: {
+        "nav-bar": NavBar,
+        InnsList: InnsList,
+        InnDetails: InnDetails
+    }
+}
+
 const routes = [
-    { path: "/", component: main },
-    { path: "/inns/:id", component: innDetails }
+    { path: "/", component: InnsList },
+    { path: "/inns/:id", component: InnDetails }
 ]
 
 const router = VueRouter.createRouter({
@@ -118,7 +139,7 @@ const router = VueRouter.createRouter({
     routes
   })
 
-const app = Vue.createApp({})
+const app = Vue.createApp(Main)
 
 app.use(router);
 app.mount("#app");
