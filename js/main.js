@@ -1,6 +1,6 @@
 const NavBar = {
     template: "#nav-bar-template",
-    method: {
+    methods: {
         async searchInn() {
             var url = `http://localhost:3000/api/v1/inns?name=${query}`;
             var res = await fetch(url);
@@ -31,6 +31,36 @@ const CitiesMenu = {
     },
     created() {
         this.getCities();
+    }
+}
+
+const InnsByCity = {
+    template: "#inns-by-city-template",
+    data() {
+        return {
+            city: this.$route.params.city,
+            innsByCity: []
+        }
+    },
+    watch: {
+        '$route' (newRoute, oldRoute) {
+            this.city = newRoute.params.city;
+
+        }
+    },
+    methods: {
+        async getInnsByCity() {
+            var city = this.$route.params.city;
+            var url = `http://localhost:3000/api/v1/inns/cities?city=${city}`;
+            var res = await fetch(url);
+            var data = await res.json();
+
+            console.log(city);
+            console.log(data);
+        }
+    },
+    created() {
+        this.getInnsByCity();
     }
 }
 
@@ -202,8 +232,9 @@ const Main = {
 
 const routes = [
     { path: "/", component: InnsList },
+    { path: "/inns/:id/room/:roomId/booking", component: Booking },
     { path: "/inns/:id", component: InnDetails },
-    { path: "/inns/:id/room/:roomId/booking", component: Booking }
+    { path: "/:city", component: InnsByCity }
 ]
 
 const router = VueRouter.createRouter({
