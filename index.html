@@ -12,6 +12,7 @@
         <header>
             <nav-bar></nav-bar>
         </header>
+        <cities-menu></cities-menu>
         <router-view></router-view>
     </script>
 
@@ -19,10 +20,18 @@
         <section id="nav-bar">
             <ul>
                 <li><router-link to="/">Pousadaria</router-link></li>
-                <li><a href="">Entrar</a></li>                
+                <li><a href="">Entrar</a></li>
             </ul>
 
         </section>
+    </script>
+
+    <script id="cities-menu-template" type="text/template">
+        <ul>
+            <li v-for="city in cities">
+                <router-link to="/">{{ city }}</router-link>
+            </li>
+        </ul>
     </script>
 
     <script id="inns-list-template" type="text/template">

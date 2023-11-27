@@ -11,6 +11,29 @@ const NavBar = {
     }
 }
 
+const CitiesMenu = {
+    template: "#cities-menu-template",
+    data() {
+        return {
+            cities: []
+        }
+    },
+    methods: {
+        async getCities() {
+            var url = "http://localhost:3000/api/v1/inns/cities"
+            var res = await fetch(url);
+            var data = await res.json();
+
+            this.cities = [];
+
+            data.cidades.forEach(city => this.cities.push(city));
+        }
+    },
+    created() {
+        this.getCities();
+    }
+}
+
 const InnsList = {
     template: "#inns-list-template",
     data() {
@@ -45,8 +68,6 @@ const InnsList = {
                 inn.city = o.address.city;
                 inn.state = o.address.state;
                 inn.postalCode = o.postal_code;
-
-                console.log(inn.score);
 
                 this.inns.push(inn);
             });
@@ -172,6 +193,7 @@ const Main = {
     template: "#main-template",
     components: {
         "nav-bar": NavBar,
+        "cities-menu": CitiesMenu,
         InnsList: InnsList,
         InnDetails: InnDetails,
         Booking: Booking
