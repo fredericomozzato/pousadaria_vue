@@ -143,7 +143,10 @@ const Booking = {
             roomId: this.$route.params.roomId,
             startDate: new Date(),
             endDate: new Date(),
-            guests: 0
+            guests: 0,
+            available: null,
+            value: null,
+            errors: []
         }
     },
     methods: {
@@ -154,7 +157,13 @@ const Booking = {
             let res = await fetch(baseUrl + params);
             let data = await res.json();
 
-            
+            if (res.status === 200) {
+                this.value = data.valor;
+                this.available = true;
+            } else {
+                this.available = false;
+                this.errors = data.erro;
+            }
         }
     }
 }

@@ -122,22 +122,32 @@
         <h1>Disponibilidade de reserva</h1>
         <form action="">
             <div>
-                <label for="start-date">Data de entrada</label>
+                <label for="start-date">Data de entrada: </label>
                 <input v-model="startDate" type="date" id="start-date">
             </div>
             <div>
-                <label for="end-date">Data de saída</label>
+                <label for="end-date">Data de saída: </label>
                 <input v-model="endDate" type="date" id="end-date">
             </div>
             <div>
-                <label for="guests">Número de hóspedes</label>
+                <label for="guests">Número de hóspedes: </label>
                 <input v-model="guests" type="number" id="guests">
             </div>
             <button v-on:click="checkAvailability">Verificar disponibilidade</button>
         </form>
 
         <section id="availability">
-            
+            <div v-if="available == true">
+                <h2>Quarto disponível:</h2>
+                <h3>Valor da reserva: R$ {{ value }}</h3>
+                <button>CONFIRMAR RESERVA</button>
+            </div>
+            <div v-else>
+                <ul>
+                    <li v-for="error in errors">{{ error }}</li>
+                </ul>
+            </div>
+
         </section>
         <router-link :to="/inns/ + innId">Voltar</router-link>
     </script>
