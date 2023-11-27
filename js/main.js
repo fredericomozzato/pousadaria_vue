@@ -46,6 +46,8 @@ const InnsList = {
                 inn.state = o.address.state;
                 inn.postalCode = o.postal_code;
 
+                console.log(inn.score);
+
                 this.inns.push(inn);
             });
 
@@ -97,7 +99,7 @@ const InnDetails = {
             this.inn.neighborhood = data.address.neighborhood;
             this.inn.postalCode = data.address.postal_code;
             this.inn.description = data.description;
-            this.inn.averageScore = data.average_score;
+            this.inn.score = data.average_score;
         },
         async getRooms() {
             var innId = this.$route.params.id;

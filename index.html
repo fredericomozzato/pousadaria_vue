@@ -42,7 +42,7 @@
                 <div id="inn-card">
                     <h2><router-link :to="/inns/ + inn.id">{{ inn.name }}</router-link></h2>
                     <p>{{ inn.description }}</p>
-                    <p>Avaliação: {{ inn.average_score }}</p>
+                    <p><strong>Avaliação: {{ inn.score }}</strong></p>
                     <address>
                         <p>{{ inn.city }} - {{ inn.state }}</p>
                         <p>Contato:</p>
@@ -58,7 +58,7 @@
         <section>
             <div id="details">
                 <h1>{{ inn.name }}</h1>
-                <h3>Média de avaliações: {{ inn.averageScore }}</h3>
+                <h3>Média de avaliações: {{ inn.score }}</h3>
                 <address>
                     <p>{{ inn.street }}, {{ inn.number }}</p>
                     <p>{{ inn.neighborhood }}, {{ inn.city }} - {{ inn.state }}</p>
