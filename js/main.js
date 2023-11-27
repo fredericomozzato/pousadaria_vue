@@ -46,6 +46,8 @@ const InnsList = {
                 inn.state = o.address.state;
                 inn.postalCode = o.postal_code;
 
+                console.log(inn.score);
+
                 this.inns.push(inn);
             });
 
@@ -82,6 +84,7 @@ const InnDetails = {
             var res = await fetch(`http://localhost:3000/api/v1/inns/${id}`);
             var data = await res.json();
         
+            this.inn.id = data.id;
             this.inn.name = data.name;
             this.inn.email = data.email;
             this.inn.phone = data.phone;
@@ -97,7 +100,7 @@ const InnDetails = {
             this.inn.neighborhood = data.address.neighborhood;
             this.inn.postalCode = data.address.postal_code;
             this.inn.description = data.description;
-            this.inn.averageScore = data.average_score;
+            this.inn.score = data.average_score;
         },
         async getRooms() {
             var innId = this.$route.params.id;
@@ -110,6 +113,7 @@ const InnDetails = {
             data.forEach(r => {
                 var room = new Object();
 
+                room.id = r.id;
                 room.name = r.name;
                 room.description = r.description;
                 room.size = r.size;
@@ -131,18 +135,53 @@ const InnDetails = {
 
 }
 
+const Booking = {
+    template: "#booking-template",
+    data() {
+        return {
+            innId: this.$route.params.id,
+            roomId: this.$route.params.roomId,
+            startDate: new Date(),
+            endDate: new Date(),
+            guests: 0,
+            available: null,
+            value: null,
+            errors: []
+        }
+    },
+    methods: {
+        async checkAvailability() {
+            let baseUrl = `http://localhost:3000/api/v1/bookings/pre-booking`;
+            let params = `?room_id=${this.roomId}&start_date=${this.startDate}
+                          &end_date=${this.endDate}&number_of_guests=${this.guests}`;
+            let res = await fetch(baseUrl + params);
+            let data = await res.json();
+
+            if (res.status === 200) {
+                this.value = data.valor;
+                this.available = true;
+            } else {
+                this.available = false;
+                this.errors = data.erro;
+            }
+        }
+    }
+}
+
 const Main = {
     template: "#main-template",
     components: {
         "nav-bar": NavBar,
         InnsList: InnsList,
-        InnDetails: InnDetails
+        InnDetails: InnDetails,
+        Booking: Booking
     }
 }
 
 const routes = [
     { path: "/", component: InnsList },
-    { path: "/inns/:id", component: InnDetails }
+    { path: "/inns/:id", component: InnDetails },
+    { path: "/inns/:id/room/:roomId/booking", component: Booking }
 ]
 
 const router = VueRouter.createRouter({
