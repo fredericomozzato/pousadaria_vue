@@ -109,13 +109,37 @@
                                     <li>Acessibilidade: {{ room.accessibility === true ? "Sim" : "Não" }}</li>
                                 </dd>
                             </dl>
-                            <button>RESERVAR</button>
+                            <router-link :to="/inns/ + inn.id + /room/ + room.id + /booking/">RESERVAR</router-link>
                         </div>
                     </li>
                 </ul>
             </div>
         </section>
         <router-link to="/">Voltar</router-link>
+    </script>
+
+    <script id="booking-template" type="text/template">
+        <h1>Disponibilidade de reserva</h1>
+        <form action="">
+            <div>
+                <label for="start-date">Data de entrada</label>
+                <input v-model="startDate" type="date" id="start-date">
+            </div>
+            <div>
+                <label for="end-date">Data de saída</label>
+                <input v-model="endDate" type="date" id="end-date">
+            </div>
+            <div>
+                <label for="guests">Número de hóspedes</label>
+                <input v-model="guests" type="number" id="guests">
+            </div>
+            <button v-on:click="checkAvailability">Verificar disponibilidade</button>
+        </form>
+
+        <section id="availability">
+            
+        </section>
+        <router-link :to="/inns/ + innId">Voltar</router-link>
     </script>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
