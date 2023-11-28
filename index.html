@@ -12,6 +12,7 @@
         <header>
             <nav-bar></nav-bar>
         </header>
+        <cities-menu></cities-menu>
         <router-view></router-view>
     </script>
 
@@ -19,10 +20,18 @@
         <section id="nav-bar">
             <ul>
                 <li><router-link to="/">Pousadaria</router-link></li>
-                <li><a href="">Entrar</a></li>                
+                <li><a href="">Entrar</a></li>
             </ul>
 
         </section>
+    </script>
+
+    <script id="cities-menu-template" type="text/template">
+        <ul>
+            <li v-for="city in cities">
+                <router-link :to="`/${city}`">{{ city }}</router-link>
+            </li>
+        </ul>
     </script>
 
     <script id="inns-list-template" type="text/template">
@@ -115,6 +124,26 @@
                 </ul>
             </div>
         </section>
+        <router-link to="/">Voltar</router-link>
+    </script>
+
+    <script id="inns-by-city-template" type="text/template">
+        <h1>Pousadas em {{ city }}</h1>
+        <p>{{ innsByCity.length }} resultado(s) encontrado(s)</p>
+        <ul>
+            <li v-for="inn in innsByCity">
+                <div class="inn-card">
+                    <router-link :to=`/inns/${inn.id}`>
+                        <h3>{{ inn.name }}</h3>
+                    </router-link>
+                    <p>Avaliação: {{ inn.score }}</p>
+                    <address>
+                        Bairro: {{ inn.neighborhood }} <br>
+                        {{ inn.email }}
+                    </address>
+                </div>
+            </li>
+        </ul>
         <router-link to="/">Voltar</router-link>
     </script>
 

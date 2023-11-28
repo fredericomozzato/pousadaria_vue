@@ -1,6 +1,6 @@
 const NavBar = {
     template: "#nav-bar-template",
-    method: {
+    methods: {
         async searchInn() {
             var url = `http://localhost:3000/api/v1/inns?name=${query}`;
             var res = await fetch(url);
@@ -8,6 +8,86 @@ const NavBar = {
 
             
         }
+    }
+}
+
+const CitiesMenu = {
+    template: "#cities-menu-template",
+    data() {
+        return {
+            cities: []
+        }
+    },
+    methods: {
+        async getCities() {
+            var url = "http://localhost:3000/api/v1/inns/cities"
+            var res = await fetch(url);
+            var data = await res.json();
+
+            this.cities = [];
+
+            data.cidades.forEach(city => this.cities.push(city));
+        }
+    },
+    created() {
+        this.getCities();
+    }
+}
+
+const InnsByCity = {
+    template: "#inns-by-city-template",
+    data() {
+        return {
+            city: this.$route.params.city,
+            innsByCity: []
+        }
+    },
+    watch: {
+        '$route' (newRoute, oldRoute) {
+            this.city = newRoute.params.city;
+            this.getInnsByCity();
+        }
+    },
+    methods: {
+        async getInnsByCity() {
+            var city = this.$route.params.city;
+            var url = `http://localhost:3000/api/v1/inns/cities?city=${city}`;
+            var res = await fetch(url);
+            var data = await res.json();
+
+            this.innsByCity = [];
+
+            data.forEach(o => {
+                let inn = new Object();
+
+                inn.id = o.id;
+                inn.name = o.name;
+                inn.phone = o.phone;
+                inn.email = o.email;
+                inn.description = o.description;
+                inn.payMethods = o.pay_methods;
+                inn.petFriendly = o.pet_friendly;
+                inn.userPolicies = o.user_policies;
+                inn.checkInTime = o.formatted_check_in_time;
+                inn.checkOutTime = o.formatted_check_out_time;
+                inn.score = o.average_score;
+                inn.street = o.address.street;
+                inn.number = o.address.number;
+                inn.neighborhood = o.address.neighborhood;
+                inn.city = o.address.city;
+                inn.state = o.address.state;
+                inn.postalCode = o.postal_code;
+
+                this.innsByCity.push(inn);
+            });
+
+            console.log(this.innsByCity)
+
+            this.innsByCity.sort((a, b) => a.name.localeCompare(b.name));
+        }
+    },
+    created() {
+        this.getInnsByCity();
     }
 }
 
@@ -45,8 +125,6 @@ const InnsList = {
                 inn.city = o.address.city;
                 inn.state = o.address.state;
                 inn.postalCode = o.postal_code;
-
-                console.log(inn.score);
 
                 this.inns.push(inn);
             });
@@ -172,6 +250,7 @@ const Main = {
     template: "#main-template",
     components: {
         "nav-bar": NavBar,
+        "cities-menu": CitiesMenu,
         InnsList: InnsList,
         InnDetails: InnDetails,
         Booking: Booking
@@ -180,8 +259,9 @@ const Main = {
 
 const routes = [
     { path: "/", component: InnsList },
+    { path: "/inns/:id/room/:roomId/booking", component: Booking },
     { path: "/inns/:id", component: InnDetails },
-    { path: "/inns/:id/room/:roomId/booking", component: Booking }
+    { path: "/:city", component: InnsByCity }
 ]
 
 const router = VueRouter.createRouter({
