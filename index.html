@@ -129,6 +129,21 @@
 
     <script id="inns-by-city-template" type="text/template">
         <h1>Pousadas em {{ city }}</h1>
+        <p>{{ innsByCity.length }} resultado(s) encontrado(s)</p>
+        <ul>
+            <li v-for="inn in innsByCity">
+                <div class="inn-card">
+                    <router-link :to=`/inns/${inn.id}`>
+                        <h3>{{ inn.name }}</h3>
+                    </router-link>
+                    <p>Avaliação: {{ inn.score }}</p>
+                    <address>
+                        Bairro: {{ inn.neighborhood }} <br>
+                        {{ inn.email }}
+                    </address>
+                </div>
+            </li>
+        </ul>
         <router-link to="/">Voltar</router-link>
     </script>
 

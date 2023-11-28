@@ -45,7 +45,7 @@ const InnsByCity = {
     watch: {
         '$route' (newRoute, oldRoute) {
             this.city = newRoute.params.city;
-
+            this.getInnsByCity();
         }
     },
     methods: {
@@ -55,8 +55,35 @@ const InnsByCity = {
             var res = await fetch(url);
             var data = await res.json();
 
-            console.log(city);
-            console.log(data);
+            this.innsByCity = [];
+
+            data.forEach(o => {
+                let inn = new Object();
+
+                inn.id = o.id;
+                inn.name = o.name;
+                inn.phone = o.phone;
+                inn.email = o.email;
+                inn.description = o.description;
+                inn.payMethods = o.pay_methods;
+                inn.petFriendly = o.pet_friendly;
+                inn.userPolicies = o.user_policies;
+                inn.checkInTime = o.formatted_check_in_time;
+                inn.checkOutTime = o.formatted_check_out_time;
+                inn.score = o.average_score;
+                inn.street = o.address.street;
+                inn.number = o.address.number;
+                inn.neighborhood = o.address.neighborhood;
+                inn.city = o.address.city;
+                inn.state = o.address.state;
+                inn.postalCode = o.postal_code;
+
+                this.innsByCity.push(inn);
+            });
+
+            console.log(this.innsByCity)
+
+            this.innsByCity.sort((a, b) => a.name.localeCompare(b.name));
         }
     },
     created() {
